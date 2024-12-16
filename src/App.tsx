@@ -8,9 +8,9 @@ function App() {
         initial={{ x: -200, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="text-3xl text-center font-bold tracking-tighter mt-4"
+        className="text-3xl text-center font-bold tracking-tight mt-4"
       >
-        Quick Click Challenge
+        Reflex Rush
       </motion.h1>
       <motion.p
         initial={{ x: 200, opacity: 0 }}
