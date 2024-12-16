@@ -20,7 +20,7 @@ const Block: React.FC<BlockProps> = ({ color, onClick }) => {
     <motion.div
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className={`w-40 h-40 cursor-pointer bg-${color}-700 rounded-md`}
+      className={`w-40 h-40 cursor-pointer ${color} rounded-md`}
       onClick={onClick}
     />
   );
@@ -72,9 +72,9 @@ const Interface: React.FC<InterfaceProps> = ({
     <div>
       {win === "pending" ? (
         change ? (
-          <Block color="green" onClick={winClick} />
+          <Block color="bg-green-700" onClick={winClick} />
         ) : (
-          <Block color="red" onClick={loseClick} />
+          <Block color="bg-red-700" onClick={loseClick} />
         )
       ) : (
         <></>
