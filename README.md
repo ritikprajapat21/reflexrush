@@ -12,7 +12,7 @@ ReflexRush is a simple, interactive web game designed to test and improve your r
 
 ## Demo
 
-A live demo of ReflexRush is available [here](#).
+A live demo of ReflexRush is available [here](https://reflexrush.onrender.com).
 
 ## Installation
 
