@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import ReactionTime from "./components/ReactionTime";
+import { NavLink } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <section className="max-w-7xl mx-auto py-4">
+    <section className="max-w-7xl mx-auto py-4 px-2">
+      <Navbar />
       <motion.h1
         initial={{ x: -200, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Block from "./Block";
 import Confetti from "react-confetti-boom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useFirebase } from "../context/FirebaseProvider";
 
 const ReactionTime = () => {
   const [start, setStart] = useState<Boolean>(false);
@@ -24,10 +25,9 @@ const ReactionTime = () => {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 100, opacity: 0 }}
-            transition={{ duration: 0.7 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="p-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md cursor-pointer"
+            className="p-2 px-4 bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer"
             onClick={() => {
               setWin("pending");
               setWinTime(0);
