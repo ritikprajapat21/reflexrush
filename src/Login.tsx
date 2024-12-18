@@ -9,10 +9,15 @@ import {
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
+import { motion } from "framer-motion";
 
 const Login = () => {
   return (
-    <section className="max-w-7xl mx-auto min-h-screen flex items-center justify-center">
+    <motion.section
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="max-w-7xl mx-auto mt-20 flex items-center justify-center"
+    >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-medium">Welcome back</CardTitle>
@@ -39,7 +44,7 @@ const Login = () => {
           </form>
         </CardContent>
       </Card>
-    </section>
+    </motion.section>
   );
 };
 

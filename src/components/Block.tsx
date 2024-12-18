@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface InterfaceProps {
-  time: Number;
+  duration: Number;
   setStart: Dispatch<SetStateAction<Boolean>>;
   setWinTime: Dispatch<SetStateAction<Number>>;
-  setTime: Dispatch<SetStateAction<Number>>;
+  setDuration: Dispatch<SetStateAction<Number>>;
   setWin: Dispatch<SetStateAction<"pending" | "won" | "lost">>;
   win: "pending" | "won" | "lost";
 }
@@ -27,9 +27,9 @@ const Block: React.FC<BlockProps> = ({ color, onClick }) => {
 };
 
 const Interface: React.FC<InterfaceProps> = ({
-  time,
+  duration,
   setStart,
-  setTime,
+  setDuration,
   setWinTime,
   setWin,
   win,
@@ -41,12 +41,12 @@ const Interface: React.FC<InterfaceProps> = ({
     const timeout = setTimeout(() => {
       setChange(true);
       setIntialTime(new Date());
-    }, Number(time) * 1000);
+    }, Number(duration) * 1000);
 
     return () => {
       window.clearTimeout(timeout);
     };
-  }, [time]);
+  }, [duration]);
 
   const winClick = () => {
     const time = new Date();
@@ -56,7 +56,7 @@ const Interface: React.FC<InterfaceProps> = ({
     setStart(false);
     setWin("won");
     setChange(false);
-    setTime(0);
+    setDuration(0);
     setWinTime(diff);
   };
 
@@ -64,7 +64,7 @@ const Interface: React.FC<InterfaceProps> = ({
     setStart(false);
     setIntialTime(null);
     setChange(false);
-    setTime(0);
+    setDuration(0);
     setWin("lost");
   };
 
