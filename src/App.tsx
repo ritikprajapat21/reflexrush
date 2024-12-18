@@ -1,5 +1,7 @@
-import Navbar from "./components/Navbar";
+import { lazy } from "react";
 import { Outlet } from "react-router-dom";
+
+const Navbar = lazy(() => import("./components/Navbar"));
 
 function App() {
   return (

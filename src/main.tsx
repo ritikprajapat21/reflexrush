@@ -1,13 +1,14 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
 import { FirebaseProvider } from "./context/FirebaseProvider.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./Register.tsx";
-import Login from "./Login.tsx";
-import ReactionTime from "./components/ReactionTime.tsx";
-import Rules from "./Rules.tsx";
+
+const App = lazy(() => import("./App"));
+const Register = lazy(() => import("./Register"));
+const ReactionTime = lazy(() => import("./components/ReactionTime"));
+const Rules = lazy(() => import("./Rules"));
+const Login = lazy(() => import("./Login"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import Block from "./Block";
-import Confetti from "react-confetti-boom";
+import { lazy, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useTime from "@/lib/useTime";
 import { Link } from "react-router-dom";
+
+const Block = lazy(() => import("./Block"));
+const Confetti = lazy(() => import("react-confetti-boom"));
 
 const ReactionTime = () => {
   const [start, setStart] = useState<Boolean>(false);
