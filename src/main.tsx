@@ -9,6 +9,7 @@ const Register = lazy(() => import("./Register"));
 const ReactionTime = lazy(() => import("./components/ReactionTime"));
 const Rules = lazy(() => import("./Rules"));
 const Login = lazy(() => import("./Login"));
+const Profile = lazy(() => import("./Profile"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/rules" element={<Rules />} />
             <Route path="/signup" element={<Register />} />
             <Route path="/signin" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

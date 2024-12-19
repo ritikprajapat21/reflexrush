@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
   User,
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -16,6 +17,8 @@ type FirebaseContextType = {
   signInWithCredentials: (email: string, password: string) => Promise<Boolean>;
   signUpWithCredentials: (email: string, password: string) => Promise<Boolean>;
   signInWithGoogle: () => void;
+  signOut: () => void;
+  updateUserProfile: (displayName: string) => Promise<void>;
 };
 
 const FirebaseContext = createContext<FirebaseContextType>(
@@ -36,7 +39,7 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(null);
       }
     });
-  }, [firebaseAuth]);
+  }, []);
 
   const signUpWithCredentials = async (email: string, password: string) => {
     try {
@@ -97,6 +100,22 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const signOut = () => {
+    firebaseAuth.signOut();
+  };
+
+  const updateUserProfile = async (displayName: string) => {
+    try {
+      updateProfile(firebaseAuth.currentUser!, {
+        displayName,
+      });
+      setUser({ ...user!, displayName });
+      toast.success("Profile updated");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <FirebaseContext
       value={{
@@ -104,6 +123,8 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
         signInWithCredentials,
         signUpWithCredentials,
         signInWithGoogle,
+        signOut,
+        updateUserProfile,
       }}
     >
       {children}

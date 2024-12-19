@@ -15,7 +15,7 @@ const ReactionTime = () => {
 
   useEffect(() => {
     if (start) {
-      setDuration(Math.floor(Math.random() * 6));
+      setDuration(Math.floor(Math.random() * 6 + 0.7));
     }
   }, [start]);
 
