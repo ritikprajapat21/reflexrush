@@ -1,6 +1,9 @@
 import useTime from "@/lib/useTime";
 import { motion } from "framer-motion";
+import { lazy } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+
+const AuthHeader = lazy(() => import("./AuthHeader"));
 
 const Navbar = () => {
   const { bestTime } = useTime();
@@ -29,21 +32,7 @@ const Navbar = () => {
             </p>
           </div>
         )}
-        {location.pathname !== "/signin" && (
-          <motion.button
-            initial={{ x: 70, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <NavLink
-              to="/signin"
-              className="p-2 px-4 bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer"
-            >
-              Sign in
-            </NavLink>
-          </motion.button>
-        )}
+        {location.pathname !== "/signin" && <AuthHeader />}
       </div>
     </nav>
   );

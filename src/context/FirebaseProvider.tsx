@@ -9,11 +9,12 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import { app } from "../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
+import { toast } from "sonner";
 
 type FirebaseContextType = {
   user: User | null;
-  signInWithCredentials: (email: string, password: string) => void;
-  signUpWithCredentials: (email: string, password: string) => void;
+  signInWithCredentials: (email: string, password: string) => Promise<Boolean>;
+  signUpWithCredentials: (email: string, password: string) => Promise<Boolean>;
   signInWithGoogle: () => void;
 };
 
@@ -32,7 +33,6 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
       if (user) {
         setUser(user);
       } else {
-        console.log("user not logged in");
         setUser(null);
       }
     });
@@ -40,38 +40,60 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUpWithCredentials = async (email: string, password: string) => {
     try {
-      const result = await createUserWithEmailAndPassword(
-        firebaseAuth,
-        email,
-        password,
-      );
-      console.log(result);
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      return true;
     } catch (error: any) {
-      console.log(error.message, error.code);
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          toast.error("Email already in use");
+          break;
+        default:
+          toast.error("Something went wrong");
+          break;
+      }
+      return false;
     }
   };
 
   const signInWithCredentials = async (email: string, password: string) => {
     try {
-      const result = await signInWithEmailAndPassword(
-        firebaseAuth,
-        email,
-        password,
-      );
-      console.log(result);
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
+      return true;
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error.code);
+      switch (error.code) {
+        case "auth/invalid-credential":
+          toast.error("Invalid credential");
+          break;
+        case "auth/invalid-password":
+          toast.error("Invalid password");
+          break;
+        case "auth/user-not-found":
+          toast.error("User not found. Please sign up");
+          break;
+        default:
+          toast.error("Something went wrong");
+          break;
+      }
+      return false;
     }
   };
 
   const signInWithGoogle = async () => {
-    //signInWithPopup(getAuth(app), googleProvider);
     try {
-      const userCred = await signInWithPopup(firebaseAuth, googleProvider);
-      console.log(userCred);
+      await signInWithPopup(firebaseAuth, googleProvider);
+      return true;
     } catch (error: any) {
-      console.error(error);
-      console.log(error.message);
+      console.log(error.code);
+      switch (error.code) {
+        case "auth/cancelled-popup-request":
+          toast.error("Popup closed by user");
+          break;
+        default:
+          toast.error("Something went wrong");
+          break;
+      }
+      return false;
     }
   };
 

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import {
   Card,
@@ -9,15 +8,24 @@ import {
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { z } from "zod";
-import { useFirebase } from "./context/FirebaseProvider";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useFirebase } from "./context/FirebaseProvider";
+import { useEffect, useState } from "react";
+import { z } from "zod";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signInWithCredentials, signInWithGoogle, user } = useFirebase();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   const signInForm = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -26,16 +34,17 @@ const Login = () => {
       .min(6, { message: "Password must be at least 6 characters" }),
   });
 
-  const { signInWithCredentials, signInWithGoogle } = useFirebase();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const result = signInForm.safeParse({ email, password });
-    if (result.success) {
-      signInWithCredentials(email, password);
+    const validateForm = signInForm.safeParse({ email, password });
+    if (validateForm.success) {
+      const result = await signInWithCredentials(email, password);
+      if (result) {
+        navigate("/");
+      }
     } else {
-      result.error.issues.forEach((issue) => {
+      validateForm.error.issues.forEach((issue) => {
         toast.error(issue.message);
       });
     }

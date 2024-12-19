@@ -8,7 +8,6 @@ export default function useTime() {
   }, []);
 
   const checkTime = (newTime: Number) => {
-    console.log(newTime, bestTime);
     if (newTime < bestTime) {
       setBestTime(newTime);
       localStorage.setItem("bestTime", String(newTime));

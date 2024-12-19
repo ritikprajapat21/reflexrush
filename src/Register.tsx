@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import {
   Card,
@@ -7,18 +6,26 @@ import {
   CardHeader,
   CardTitle,
 } from "./components/ui/card";
+import { FormEvent, useEffect, useState } from "react";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useFirebase } from "./context/FirebaseProvider";
-import { FormEvent, useState } from "react";
-import { z } from "zod";
 import { toast } from "sonner";
+import { useFirebase } from "./context/FirebaseProvider";
+import { z } from "zod";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signUpWithCredentials } = useFirebase();
+  const { signUpWithCredentials, user } = useFirebase();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   const signUpForm = z.object({
     email: z.string().email({ message: "Invalid email" }),
@@ -27,14 +34,17 @@ const Register = () => {
       .min(6, { message: "Password must be at least 6 characters" }),
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const result = signUpForm.safeParse({ email, password });
-    if (result.success) {
-      signUpWithCredentials(email, password);
+    const validateForm = signUpForm.safeParse({ email, password });
+    if (validateForm.success) {
+      const result = await signUpWithCredentials(email, password);
+      if (result) {
+        navigate("/");
+      }
     } else {
-      result.error.issues.forEach((issue) => {
+      validateForm.error.issues.forEach((issue) => {
         toast.error(issue.message);
       });
     }
