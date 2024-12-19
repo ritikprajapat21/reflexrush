@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { Card, CardDescription, CardTitle } from "./components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "./components/ui/card";
+import { Link } from "react-router-dom";
 
 const Rules = () => {
   const rules = [
@@ -29,6 +35,21 @@ const Rules = () => {
             ))}
           </ol>
         </CardDescription>
+        <CardFooter className="mt-8 flex items-center justify-center">
+          <motion.button
+            initial={{ x: 70, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link
+              to="/"
+              className="p-2 px-4 bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer"
+            >
+              Back
+            </Link>
+          </motion.button>
+        </CardFooter>
       </Card>
     </motion.section>
   );

@@ -10,8 +10,36 @@ import {
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { motion } from "framer-motion";
+import { useFirebase } from "./context/FirebaseProvider";
+import { FormEvent, useState } from "react";
+import { z } from "zod";
+import { toast } from "sonner";
 
 const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signUpWithCredentials } = useFirebase();
+
+  const signUpForm = z.object({
+    email: z.string().email({ message: "Invalid email" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+  });
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = signUpForm.safeParse({ email, password });
+    if (result.success) {
+      signUpWithCredentials(email, password);
+    } else {
+      result.error.issues.forEach((issue) => {
+        toast.error(issue.message);
+      });
+    }
+  };
+
   return (
     <motion.section
       initial={{ y: 100, opacity: 0 }}
@@ -23,20 +51,33 @@ const Register = () => {
           <CardTitle className="text-2xl font-medium">Sign Up</CardTitle>
           <CardDescription>
             Already have an account? &nbsp;{" "}
-            <Link className="underline text-emerald-800" to="/signin">
+            <Link className="underline text-emerald-800 font-bold" to="/signin">
               Sign in
             </Link>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="min-w-[350px] flex flex-col gap-4 justify-center items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="min-w-[350px] flex flex-col gap-4 justify-center items-center"
+          >
             <div className="w-full">
               <Label htmlFor="email">Email</Label>
-              <Input type="email" name="email" id="email" />
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="w-full">
               <Label htmlFor="password">Password</Label>
-              <Input type="password" name="password" id="password" />
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Button className="p-2 w-full bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer">
               Sign up

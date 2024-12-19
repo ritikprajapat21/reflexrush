@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { app } from "../firebase";
-import { GoogleAuthProvider } from "firebase/auth/web-extension";
+import { GoogleAuthProvider } from "firebase/auth";
 
 type FirebaseContextType = {
   user: User | null;
@@ -17,8 +17,8 @@ type FirebaseContextType = {
   signInWithGoogle: () => void;
 };
 
-const FirebaseContext = createContext<FirebaseContextType | undefined>(
-  undefined,
+const FirebaseContext = createContext<FirebaseContextType>(
+  {} as FirebaseContextType,
 );
 
 const firebaseAuth = getAuth(app);
@@ -64,15 +64,15 @@ const FirebaseProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signInWithGoogle = () => {
-    signInWithPopup(getAuth(app), googleProvider);
-    //try {
-    //  const userCred = signInWithPopup(firebaseAuth, googleProvider);
-    //  console.log(userCred);
-    //} catch (error: any) {
-    //  console.error(error);
-    //  console.log(error.message);
-    //}
+  const signInWithGoogle = async () => {
+    //signInWithPopup(getAuth(app), googleProvider);
+    try {
+      const userCred = await signInWithPopup(firebaseAuth, googleProvider);
+      console.log(userCred);
+    } catch (error: any) {
+      console.error(error);
+      console.log(error.message);
+    }
   };
 
   return (

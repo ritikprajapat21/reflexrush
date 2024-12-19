@@ -38,7 +38,6 @@ const ReactionTime = () => {
       <motion.p
         initial={{ x: 200, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.5 }}
         className="text-center mb-2"
       >
         Check your reaction time and challenge other

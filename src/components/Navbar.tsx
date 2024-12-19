@@ -1,9 +1,10 @@
 import useTime from "@/lib/useTime";
 import { motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { bestTime } = useTime();
+  const location = useLocation();
 
   return (
     <nav className="flex justify-around items-center">
@@ -28,19 +29,21 @@ const Navbar = () => {
             </p>
           </div>
         )}
-        <motion.button
-          initial={{ x: 70, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <NavLink
-            to="/signin"
-            className="p-2 px-4 bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer"
+        {location.pathname !== "/signin" && (
+          <motion.button
+            initial={{ x: 70, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            Sign in
-          </NavLink>
-        </motion.button>
+            <NavLink
+              to="/signin"
+              className="p-2 px-4 bg-emerald-800 hover:bg-emerald-700 text-white rounded-md cursor-pointer"
+            >
+              Sign in
+            </NavLink>
+          </motion.button>
+        )}
       </div>
     </nav>
   );
